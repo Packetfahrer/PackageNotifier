@@ -1,4 +1,10 @@
-**Cydia Notifier** (iOS 7 & 8)
+**Status**: Submitted to thebigboss.org (04/14/2015 01:45)
+
+---
+---
+
+
+###Cydia Notifier (iOS 7 & 8)###
 
 Background Refresh, Notifications & Badges for Cydia
 
@@ -23,9 +29,14 @@ Refreshes all your sources in the background every 1 to 48 hour (configuratable)
 
 **Screenshots**
 
-2Do
+<img src="http://i.imgur.com/WmCkXmR.png"  height="450" width="253" >
+<img src="http://i.imgur.com/Fteb20N.png"  height="450" width="253" >
+<img src="http://i.imgur.com/O2hATGw.png"  height="450" width="253" >
+<img src="http://i.imgur.com/bTxfxpA.png"  height="450" width="253" >
+<img src="http://i.imgur.com/zev5GhU.png"  height="450" width="253" >
 
 
 **License**
 
 Released under [BSD 3-Clause License](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29).
+If you'd like to contribute something, feel free to send me a pull request!
