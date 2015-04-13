@@ -1,0 +1,9 @@
+Package: com.accuratweaks.cydianotifier
+Name: Cydia Notifier
+Depends: mobilesubstrate, libactivator, com.accuratweaks.common
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Background Refresh, Notifications & Badges for Cydia
+Maintainer: Accura Tweaks
+Author: Accura Tweaks
+Section: Tweaks

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>items</key>
+    <array>
+        <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+            <key>label</key>
+            <string>Credits</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSDefaultCell</string>
+            <key>id</key>
+            <string>ACCURA_TWEAKS</string>
+            <key>cellClass</key>
+            <string>ATPSAccuraTweaksTableCell</string>
+            <key>dynamicHeight</key>
+            <true/>
+         </dict>
+         <dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>label</key>
+            <string>Follow @AccuraTweaks on Twitter</string>
+            <key>action</key>
+            <string>followOnTwitter</string>
+            <key>icon</key>
+            <string>twitter.png</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>label</key>
+            <string>Visit AccuraTweaks.com</string>
+            <key>action</key>
+            <string>visitAccuraTweaks</string>
+            <key>icon</key>
+            <string>browser.png</string>
+        </dict>
+         <dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>label</key>
+            <string>Donate via PayPal</string>
+            <key>action</key>
+            <string>donate</string>
+            <key>icon</key>
+            <string>paypal.png</string>
+        </dict>
+                <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+            <key>label</key>
+            <string>Cydia Notifier is open source!</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>label</key>
+            <string>Source code on Github</string>
+            <key>action</key>
+            <string>visitGithub</string>
+            <key>icon</key>
+            <string>github.png</string>
+        </dict>
+    </array>
+    <key>title</key>
+    <string>Credits</string>
+</dict>
+</plist>

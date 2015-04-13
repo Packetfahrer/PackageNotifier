@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>title</key>
+	<string>Cydia Notifier</string>
+	<key>items</key>
+	<array>
+        <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+            <key>headerCellClass</key>
+            <string>ATPSEmptyHeaderView</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSDefaultCell</string>
+            <key>cellClass</key>
+            <string>ATPSImageTableCell</string>
+            <key>dynamicHeight</key>
+            <true/>
+            <key>icon</key>
+            <string>header.png</string>
+        </dict>
+		<dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>detail</key>
+            <string>CydiaNotifierAutoRefreshPreferencesListController</string>
+            <key>label</key>
+            <string>Automatic Refresh</string>
+            <key>icon</key>
+            <string>refresh.png</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>detail</key>
+            <string>CydiaNotifierBadgePreferencesListController</string>
+            <key>label</key>
+            <string>Badge Style</string>
+            <key>icon</key>
+            <string>badge.png</string>
+        </dict>
+        		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>label</key>
+			<string>Activator Events</string>
+			<key>isController</key>
+			<true/>
+			<key>bundle</key>
+			<string>LibActivator</string>
+			<key>activatorListener</key>
+			<string>com.accuratweaks.cydianotifier.refresh</string>
+			<key>activatorTitle</key>
+			<string>Activator Events</string>
+            <key>icon</key>
+            <string>activator.png</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>id</key>
+			<string>REFRESH_GROUP</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>id</key>
+			<string>REFRESH_BUTTON</string>
+			<key>action</key>
+			<string>toggleSourcesRefresh</string>
+            <key>icon</key>
+            <string>refresh.png</string>
+		</dict>
+
+
+		<dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>detail</key>
+            <string>CydiaNotifierPromotionPreferences</string>
+            <key>label</key>
+            <string>More by Accura Tweaks</string>
+            <key>icon</key>
+            <string>featured.png</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>detail</key>
+            <string>CydiaNotifierCreditsPreferences</string>
+            <key>label</key>
+            <string>Credits &amp; Source Code</string>
+            <key>icon</key>
+            <string>person.png</string>
+        </dict>
+       <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+        </dict>
+        <dict>
+            <key>action</key>
+            <string>sendSupportEmail</string>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>label</key>
+            <string>Support</string>
+            <key>icon</key>
+            <string>mail.png</string>
+        </dict>
+	</array>
+</dict>
+</plist>

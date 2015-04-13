@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>title</key>
+    <string>Auto Refresh Configuration</string>
+    <key>items</key>
+    <array>
+        <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+            <key>label</key>
+            <string>Automatic Refresh</string>
+            <key>footerText</key>
+            <string>If disabled, you can refresh using the refresh button or using an activator event.</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSSwitchCell</string>
+            <key>default</key>
+            <true/>
+            <key>key</key>
+            <string>CNEnableAutoRefresh</string>
+            <key>id</key>
+            <string>AUTO_REFRESH_ENABLED</string>
+            <key>label</key>
+            <string>Automatic Refresh</string>
+            <key>PostNotification</key>
+            <string>com.accuratweaks.cydianotifier/prefschanged</string>
+            <key>set</key>
+            <string>toggleAutoRefresh:forSpecifier:</string>
+            <key>icon</key>
+            <string>refresh.png</string>
+        </dict>
+        <dict>
+            <key>cellClass</key>
+            <string>CNTimeSelectionCell</string>
+            <key>id</key>
+            <string>FREQUENCY_SELECTION_CELLS</string>
+            <key>default</key>
+            <real>3</real>
+            <key>key</key>
+            <string>CNAutoRefreshInterval</string>
+            <key>max</key>
+            <real>6</real>
+            <key>min</key>
+            <real>0</real>
+            <key>dynamicHeight</key>
+            <true/>
+            <key>PostNotification</key>
+            <string>com.accuratweaks.cydianotifier/prefschanged</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSSwitchCell</string>
+            <key>default</key>
+            <false/>
+            <key>id</key>
+            <string>REQUIRES_WIFIS</string>
+            <key>key</key>
+            <string>CNAutorefreshRequiresWiFi</string>
+            <key>label</key>
+            <string>Requires WiFi</string>
+            <key>PostNotification</key>
+            <string>com.accuratweaks.cydianotifier/prefschanged</string>
+            <key>icon</key>
+            <string>wifi.png</string>
+        </dict>
+    </array>
+</dict>
+</plist>

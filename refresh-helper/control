@@ -1,0 +1,10 @@
+Package: com.accuratweaks.refresh-helper
+Name: refresh-helper
+Depends: 
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome tool of some sort!!
+Maintainer: Simon Selg
+Author: Simon Selg
+Section: System
+Tag: role::hacker
