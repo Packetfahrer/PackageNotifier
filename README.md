@@ -12,7 +12,7 @@ Background Refresh, Notifications & Badges for Cydia
 
 **Badges in Settings**
 
-Highly customization badge in the settings for each package and a button that opens the package directly in Cydia within the package settings, all shown when there is an update available for that package.
+Highly customizable badge in the settings for each package and a button that opens the package directly in Cydia within the package settings, all shown when there is an update available for that package.
 
 <img width="132" src="http://i.imgur.com/VzS6hA3.png"> <img width="132"  src="http://i.imgur.com/MWgZ6hY.png">
 
