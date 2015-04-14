@@ -1,6 +1,6 @@
-#import "CydiaNotifierCreditsPreferences.h"
+#import "PackageNotifierCreditsPreferences.h"
 
-@implementation CydiaNotifierCreditsPreferences
+@implementation PackageNotifierCreditsPreferences
 
 -(void)followOnTwitter{
 	NSURL* twitterURL = [NSURL URLWithString:@"twitter://user?screen_name=AccuraTweaks"];
@@ -23,14 +23,14 @@
 }
 
 -(void)visitGithub{
-	NSURL* url = [NSURL URLWithString:@"https://github.com/Cr4zyS1m0n/CydiaNotifier"];
+	NSURL* url = [NSURL URLWithString:@"https://github.com/Cr4zyS1m0n/PackageNotifier"];
 	[[UIApplication sharedApplication] openURL:url];
 }
 
 
 - (id)specifiers {
 	if(_specifiers == nil) {
-		_specifiers = [self loadSpecifiersFromPlistName:@"CydiaNotifierCreditsPreferences" target:self];
+		_specifiers = [self loadSpecifiersFromPlistName:@"PackageNotifierCreditsPreferences" target:self];
 
 		 PSSpecifier* AccuraTweaks = [self specifierForID:@"ACCURA_TWEAKS"];
 		 NSString *logoPath = [NSString stringWithFormat:@"%@/%@", [self bundle].bundlePath, @"accura-logo.png"];

@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>CydiaNotifierProvider</string>
+	<string>PackageNotifierPreferences</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.cydiaupdateprovider</string>
+	<string>com.accuratweaks.packagenotifierpreferences</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -23,6 +23,6 @@
 	<key>MinimumOSVersion</key>
 	<string>3.0</string>
 	<key>NSPrincipalClass</key>
-	<string>CydiaNotifierProvider</string>
+	<string>PackageNotifierPreferencesListController</string>
 </dict>
 </plist>

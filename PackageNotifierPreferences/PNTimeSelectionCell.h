@@ -2,7 +2,7 @@
 #import <Preferences/PSSliderTableCell.h>
 #import <Preferences/PSDiscreteSlider.h>
 
-@interface CNTimeSelectionCell : PSSliderTableCell{
+@interface PNTimeSelectionCell : PSSliderTableCell{
 	UILabel* _leftLabel;
 	UILabel* _middleLabel;
 	UILabel* _rightLabel;

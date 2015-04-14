@@ -1,9 +1,9 @@
 #import <Preferences/Preferences.h>
 #import <ATCommonPrefs/ATPSTableCell.h>
-#define CydiaNotifierPreferencePlistPath @"/User/Library/Preferences/com.accuratweaks.cydianotifier.plist"
+#define PackageNotifierPreferencePlistPath @"/User/Library/Preferences/com.accuratweaks.packagenotifier.plist"
 
 
-@interface CydiaNotifierBadgePreferencesListController: PSListController {
+@interface PackageNotifierBadgePreferencesListController: PSListController {
 	int status_token;
 	NSMutableArray* _enableGroupSpecifiers;
 

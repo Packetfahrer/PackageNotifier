@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>title</key>
-	<string>Cydia Notifier</string>
+	<string>Package Notifier</string>
 	<key>items</key>
 	<array>
         <dict>
@@ -11,6 +11,8 @@
             <string>PSGroupCell</string>
             <key>headerCellClass</key>
             <string>ATPSEmptyHeaderView</string>
+            <key>footerText</key>
+            <string>You can change the notification style and it's sound in the Notification Center settings, look for the "Cydia" entry.</string>
         </dict>
         <dict>
             <key>cell</key>
@@ -26,7 +28,7 @@
             <key>cell</key>
             <string>PSLinkListCell</string>
             <key>detail</key>
-            <string>CydiaNotifierAutoRefreshPreferencesListController</string>
+            <string>PackageNotifierAutoRefreshPreferencesListController</string>
             <key>label</key>
             <string>Automatic Refresh</string>
             <key>icon</key>
@@ -36,7 +38,7 @@
             <key>cell</key>
             <string>PSLinkListCell</string>
             <key>detail</key>
-            <string>CydiaNotifierBadgePreferencesListController</string>
+            <string>PackageNotifierBadgePreferencesListController</string>
             <key>label</key>
             <string>Badge Style</string>
             <key>icon</key>
@@ -52,7 +54,7 @@
 			<key>bundle</key>
 			<string>LibActivator</string>
 			<key>activatorListener</key>
-			<string>com.accuratweaks.cydianotifier.refresh</string>
+			<string>com.accuratweaks.packagenotifier.refresh</string>
 			<key>activatorTitle</key>
 			<string>Activator Events</string>
             <key>icon</key>
@@ -85,7 +87,7 @@
             <key>cell</key>
             <string>PSLinkListCell</string>
             <key>detail</key>
-            <string>CydiaNotifierPromotionPreferences</string>
+            <string>PackageNotifierPromotionPreferences</string>
             <key>label</key>
             <string>More by Accura Tweaks</string>
             <key>icon</key>
@@ -95,7 +97,7 @@
             <key>cell</key>
             <string>PSLinkListCell</string>
             <key>detail</key>
-            <string>CydiaNotifierCreditsPreferences</string>
+            <string>PackageNotifierCreditsPreferences</string>
             <key>label</key>
             <string>Credits &amp; Source Code</string>
             <key>icon</key>

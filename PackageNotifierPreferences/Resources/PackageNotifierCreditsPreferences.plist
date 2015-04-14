@@ -54,13 +54,13 @@
             <key>cell</key>
             <string>PSGroupCell</string>
             <key>label</key>
-            <string>Cydia Notifier is open source!</string>
+            <string>Package Notifier is open source!</string>
         </dict>
         <dict>
             <key>cell</key>
             <string>PSLinkListCell</string>
             <key>label</key>
-            <string>Source code on Github</string>
+            <string>Source code on GitHub</string>
             <key>action</key>
             <string>visitGithub</string>
             <key>icon</key>

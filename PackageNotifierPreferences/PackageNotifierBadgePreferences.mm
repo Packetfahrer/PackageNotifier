@@ -1,12 +1,12 @@
-#import "CydiaNotifierBadgePreferences.h"
+#import "PackageNotifierBadgePreferences.h"
 
 #define enableGroupFooterTextDisabled @"Enabling this option will show a badge, similar to the OTA Update badge in the cells of packages, for which updates are available. \n\nAll changes here require a restart of the preference app."
 #define enableGroupFooterTextEnabled @"All changes here require a restart of the preference app."
 
-@implementation CydiaNotifierBadgePreferencesListController
+@implementation PackageNotifierBadgePreferencesListController
 - (id)specifiers {
 	if(_specifiers == nil) {
-		_specifiers = [self loadSpecifiersFromPlistName:@"CydiaNotifierBadgePreferences" target:self];
+		_specifiers = [self loadSpecifiersFromPlistName:@"PackageNotifierBadgePreferences" target:self];
 
 		_enableGroupSpecifiers = [[_specifiers subarrayWithRange:NSMakeRange(2, [_specifiers count]-2)] mutableCopy];
 		_enableGroupSpecifier = _specifiers[0];
@@ -77,7 +77,7 @@
 #pragma mark plist save/read methods to ensure ios8-compatiblity
  
 -(id) readPreferenceValue:(PSSpecifier*)specifier {
-	NSDictionary *exampleTweakSettings = [NSDictionary dictionaryWithContentsOfFile:CydiaNotifierPreferencePlistPath];
+	NSDictionary *exampleTweakSettings = [NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath];
 	if (!exampleTweakSettings[specifier.properties[@"key"]]) {
 		return specifier.properties[@"default"];
 	}
@@ -86,9 +86,9 @@
  
 -(void) setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
 	NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
-	[defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:CydiaNotifierPreferencePlistPath]];
+	[defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath]];
 	[defaults setObject:value forKey:specifier.properties[@"key"]];
-	[defaults writeToFile:CydiaNotifierPreferencePlistPath atomically:YES];
+	[defaults writeToFile:PackageNotifierPreferencePlistPath atomically:YES];
 	CFStringRef toPost = (CFStringRef)specifier.properties[@"PostNotification"];
 	if(toPost) CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), toPost, NULL, NULL, YES);
 }

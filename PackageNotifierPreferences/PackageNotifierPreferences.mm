@@ -1,16 +1,15 @@
 #import <Preferences/Preferences.h>
 #import <ATCommonPrefs/ATPSTableCell.h>
 #import <notify.h>
-#import "CNTimeSelectionCell.h"
 #import <Twitter/Twitter.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import <Social/Social.h>
 #import <ATCommon/ATSupportInfo.h>
-#define kCydiaNotifierPreferencePlistPath @"/User/Library/Preferences/com.accuratweaks.cydianotifier.plist"
-#define kCydiaNotifierSupportMailAddress @"cydiaNotifier@accuratweaks.com"
+#define kPackageNotifierPreferencePlistPath @"/User/Library/Preferences/com.accuratweaks.packagenotifier.plist"
+#define kPackageNotifierSupportMailAddress @"packagenotifier@accuratweaks.com"
 
 
-@interface CydiaNotifierPreferencesListController: PSListController<MFMailComposeViewControllerDelegate> {
+@interface PackageNotifierPreferencesListController: PSListController<MFMailComposeViewControllerDelegate> {
 	int status_token;
 }
 
@@ -18,20 +17,20 @@
 @end
 
 void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-	[((__bridge CydiaNotifierPreferencesListController*)observer) updateRefreshButton];
+	[((__bridge PackageNotifierPreferencesListController*)observer) updateRefreshButton];
 }
 
-@implementation CydiaNotifierPreferencesListController
+@implementation PackageNotifierPreferencesListController
 -(id)init{
 	self = [super init];
 	if(self){
-	    notify_register_check("com.accuratweaks.cydianotifier/status", &self->status_token);
+	    notify_register_check("com.accuratweaks.packagenotifier/status", &self->status_token);
 	}
 	return self;
 }
 - (id)specifiers {
 	if(_specifiers == nil) {
-		_specifiers = [self loadSpecifiersFromPlistName:@"CydiaNotifierPreferences" target:self];
+		_specifiers = [self loadSpecifiersFromPlistName:@"PackageNotifierPreferences" target:self];
 	}
 	return _specifiers;
 }
@@ -53,7 +52,7 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 
 -(void)showLove{
 	SLComposeViewController *controllerSLC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-	[controllerSLC setInitialText:@"I'm loving #CydiaNotifier by @AccuraTweaks - check it out: http://accuratweaks.com/cydia-notifier.html"];
+	[controllerSLC setInitialText:@"I'm loving #PackageNotifier by @AccuraTweaks - check it out: http://accuratweaks.com/package-notifier.html"];
 	[self presentViewController:controllerSLC animated:YES completion:Nil];
 }
 
@@ -72,11 +71,11 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 	ATSupportInfo* supportInfo = [[ATSupportInfo alloc]initWithPackageFilePath:[self.bundle bundlePath]];
 	MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
 	viewController.mailComposeDelegate = self;
-	viewController.toRecipients = @[kCydiaNotifierSupportMailAddress];
+	viewController.toRecipients = @[kPackageNotifierSupportMailAddress];
 	viewController.subject = [supportInfo mailSubject];
 
-	[viewController setMessageBody:@"\n\n---------------------------------------\nWe attached some information about your Cydia Notifier Preferences and your device here. This will help us solve your problem more quickly." isHTML:NO];
-	[viewController addAttachmentData:[supportInfo supportAttachmentDataForPreferencePath:kCydiaNotifierPreferencePlistPath] mimeType:@"application/x-plist" fileName:@"Information.plist"];
+	[viewController setMessageBody:@"\n\n---------------------------------------\nWe attached some information about your Package Notifier Preferences and your device here. This will help us solve your problem more quickly." isHTML:NO];
+	[viewController addAttachmentData:[supportInfo supportAttachmentDataForPreferencePath:kPackageNotifierPreferencePlistPath] mimeType:@"application/x-plist" fileName:@"Information.plist"];
 
 	[self.navigationController.navigationController presentViewController:viewController animated:YES completion:nil];
 }
@@ -89,7 +88,7 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
   	[super viewWillAppear:animated];
  	[self updateRefreshButton];
 
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), (const void*)self, status_callback, CFSTR("com.accuratweaks.cydianotifier/status"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), (const void*)self, status_callback, CFSTR("com.accuratweaks.packagenotifier/status"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	[[NSNotificationCenter defaultCenter] addObserver: self
                                          selector: @selector(handleEnterForeground:)
                                              name: UIApplicationWillEnterForegroundNotification
@@ -98,7 +97,7 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 
 -(void) viewWillDisappear:(BOOL)animated{
   	[super viewWillDisappear:animated];
- 	CFNotificationCenterRemoveObserver (CFNotificationCenterGetDarwinNotifyCenter(), (const void*)self, CFSTR("com.accuratweaks.cydianotifier/status"), NULL);
+ 	CFNotificationCenterRemoveObserver (CFNotificationCenterGetDarwinNotifyCenter(), (const void*)self, CFSTR("com.accuratweaks.packagenotifier/status"), NULL);
  	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -142,28 +141,28 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 }
 
 -(void)deleteShowNotifications{
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:kCydiaNotifierPreferencePlistPath];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:kPackageNotifierPreferencePlistPath];
 	NSMutableDictionary* mutableSettings = settings ? [settings mutableCopy] : [[NSMutableDictionary alloc]init];
 	mutableSettings[@"dismissedBulletins"] = @[];
-	[mutableSettings writeToFile:kCydiaNotifierPreferencePlistPath atomically:YES];
-	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.accuratweaks.cydianotifier/prefschanged"), NULL, NULL, YES);
+	[mutableSettings writeToFile:kPackageNotifierPreferencePlistPath atomically:YES];
+	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.accuratweaks.packagenotifier/prefschanged"), NULL, NULL, YES);
 }
 
 -(void)deletePackageIdentifierCache{
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:kCydiaNotifierPreferencePlistPath];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:kPackageNotifierPreferencePlistPath];
 	NSMutableDictionary* mutableSettings = settings ? [settings mutableCopy] : [[NSMutableDictionary alloc]init];
 	mutableSettings[@"packageIdentifierCache"] = @{};
-	[mutableSettings writeToFile:kCydiaNotifierPreferencePlistPath atomically:YES];
-	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.accuratweaks.cydianotifier/prefschanged"), NULL, NULL, YES);
+	[mutableSettings writeToFile:kPackageNotifierPreferencePlistPath atomically:YES];
+	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.accuratweaks.packagenotifier/prefschanged"), NULL, NULL, YES);
 }
 
 -(void) toggleSourcesRefresh{
 	uint64_t state;
 	notify_get_state(self->status_token, &state);
 	if ( state == 1 ){
-		notify_post("com.accuratweaks.cydianotifier/cancel");
+		notify_post("com.accuratweaks.packagenotifier/cancel");
 	}else if ( state == 0 ){
-		notify_post("com.accuratweaks.cydianotifier/refresh");
+		notify_post("com.accuratweaks.packagenotifier/refresh");
 	}
 }
 
@@ -186,7 +185,7 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 #pragma mark plist save/read methods to ensure ios8-compatiblity
 
 -(id) readPreferenceValue:(PSSpecifier*)specifier {
-	NSDictionary *exampleTweakSettings = [NSDictionary dictionaryWithContentsOfFile:kCydiaNotifierPreferencePlistPath];
+	NSDictionary *exampleTweakSettings = [NSDictionary dictionaryWithContentsOfFile:kPackageNotifierPreferencePlistPath];
 	if (!exampleTweakSettings[specifier.properties[@"key"]]) {
 		return specifier.properties[@"default"];
 	}
@@ -195,9 +194,9 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 
 -(void) setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
 	NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
-	[defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:kCydiaNotifierPreferencePlistPath]];
+	[defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:kPackageNotifierPreferencePlistPath]];
 	[defaults setObject:value forKey:specifier.properties[@"key"]];
-	[defaults writeToFile:kCydiaNotifierPreferencePlistPath atomically:YES];
+	[defaults writeToFile:kPackageNotifierPreferencePlistPath atomically:YES];
 	CFStringRef toPost = (CFStringRef)specifier.properties[@"PostNotification"];
 	if(toPost) CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), toPost, NULL, NULL, YES);
 }

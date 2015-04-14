@@ -1,8 +1,8 @@
-#import "CydiaNotifierPromotionPreferences.h"
+#import "PackageNotifierPromotionPreferences.h"
 
 
 
-@implementation CydiaNotifierPromotionPreferences
+@implementation PackageNotifierPromotionPreferences
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
@@ -16,7 +16,7 @@
 
 	[TweaksPromotionCell setProperty:NSClassFromString(@"ATPSWebViewTableCell") forKey:@"cellClass"];
 	[TweaksPromotionCell setProperty:@"TweaksPromotionCell" forKey:@"id"];
-	NSString* url = @"http://api.accuratweaks.com/tweaks/tweaks.php?id=com.accuratweaks.cydianotifier";
+	NSString* url = @"http://api.accuratweaks.com/tweaks/tweaks.php?id=com.accuratweaks.packagenotifier";
 	[TweaksPromotionCell setProperty:url forKey:@"url"];
 
     [self replaceContiguousSpecifiers:@[self.loadingSpecifier] withSpecifiers:@[TweaksPromotionCell] animated:YES];
@@ -29,7 +29,7 @@
 	if (_specifiers == nil) {
         NSMutableArray *specifiers = [NSMutableArray array];
 
-        NSString* tweaksURLStr = @"http://api.accuratweaks.com/tweaks/tweaks.php?id=com.accuratweaks.cydianotifier";
+        NSString* tweaksURLStr = @"http://api.accuratweaks.com/tweaks/tweaks.php?id=com.accuratweaks.packagenotifier";
 
 		NSURL *tweaksURL = [NSURL URLWithString:tweaksURLStr];
 		NSURLRequest* tweaksRequest = [NSURLRequest requestWithURL:tweaksURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];

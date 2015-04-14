@@ -1,5 +1,5 @@
-Package: com.accuratweaks.cydianotifier
-Name: Cydia Notifier
+Package: com.accuratweaks.packagenotifier
+Name: Package Notifier
 Depends: mobilesubstrate, libactivator, com.accuratweaks.common
 Version: 1.0
 Architecture: iphoneos-arm

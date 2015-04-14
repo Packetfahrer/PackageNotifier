@@ -1,4 +1,4 @@
 #!/bin/sh
-chown root:wheel /Library/Application\ Support/CydiaNotifier/refresh-helper
-chmod 6755 /Library/Application\ Support/CydiaNotifier/refresh-helper
-echo "Thanks for installing CydiaNotifier!"
+chown root:wheel /Library/Application\ Support/PackageNotifier/refresh-helper
+chmod 6755 /Library/Application\ Support/PackageNotifier/refresh-helper
+echo "Thanks for installing PackageNotifier!"

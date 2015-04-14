@@ -1,5 +1,5 @@
 {
 	title = "Refresh Sources";
 	description = "Refresh cydia sources";
-	group = "CydiaNotifier";
+	group = "Package Notifier";
 }

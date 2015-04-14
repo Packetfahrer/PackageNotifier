@@ -8,30 +8,30 @@
 #import <spawn.h>
 #import <notify.h>
 
-#define CydiaNotifierPreferencePlistPath @"/User/Library/Preferences/com.accuratweaks.cydianotifier.plist"
+#define PackageNotifierPreferencePlistPath @"/User/Library/Preferences/com.accuratweaks.packagenotifier.plist"
 
 @interface SBWiFiManager : NSObject
 +(id)sharedInstance;
 -(BOOL)isAssociated;
 @end
 
-@interface CydiaNotifierProvider : NSObject <BBDataProvider, LAListener>{
+@interface PackageNotifierProvider : NSObject <BBDataProvider, LAListener>{
 	NSMutableDictionary *cachedBulletins;
 	int status_token;
 	//prefs
-	BOOL CNEnableAutoRefresh;
-	int CNAutoRefreshInterval;
-	BOOL CNAutorefreshRequiresWiFi;
+	BOOL PNEnableAutoRefresh;
+	int PNAutoRefreshInterval;
+	BOOL PNAutorefreshRequiresWiFi;
 
-	double CNAutoRefreshIntervalSeconds;
+	double PNAutoRefreshIntervalSeconds;
 
-	double lastUpdateTime; //this is either cydia or cydiaNotifier
+	double lastUpdateTime;
 
 	NSMutableArray* dismissedBulletins;
 	NSMutableDictionary* currentlyShownBulletins;
 }
 @property(nonatomic) BOOL isWorking;
-+ (CydiaNotifierProvider*)sharedProvider;
++ (PackageNotifierProvider*)sharedProvider;
 -(void)refreshAndUpdate;
 -(void)cancelRefresh;
 -(void)reloadPreferences;

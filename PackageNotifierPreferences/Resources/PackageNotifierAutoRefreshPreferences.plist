@@ -20,13 +20,13 @@
             <key>default</key>
             <true/>
             <key>key</key>
-            <string>CNEnableAutoRefresh</string>
+            <string>PNEnableAutoRefresh</string>
             <key>id</key>
             <string>AUTO_REFRESH_ENABLED</string>
             <key>label</key>
             <string>Automatic Refresh</string>
             <key>PostNotification</key>
-            <string>com.accuratweaks.cydianotifier/prefschanged</string>
+            <string>com.accuratweaks.packagenotifier/prefschanged</string>
             <key>set</key>
             <string>toggleAutoRefresh:forSpecifier:</string>
             <key>icon</key>
@@ -34,13 +34,13 @@
         </dict>
         <dict>
             <key>cellClass</key>
-            <string>CNTimeSelectionCell</string>
+            <string>PNTimeSelectionCell</string>
             <key>id</key>
             <string>FREQUENCY_SELECTION_CELLS</string>
             <key>default</key>
             <real>3</real>
             <key>key</key>
-            <string>CNAutoRefreshInterval</string>
+            <string>PNAutoRefreshInterval</string>
             <key>max</key>
             <real>6</real>
             <key>min</key>
@@ -48,7 +48,7 @@
             <key>dynamicHeight</key>
             <true/>
             <key>PostNotification</key>
-            <string>com.accuratweaks.cydianotifier/prefschanged</string>
+            <string>com.accuratweaks.packagenotifier/prefschanged</string>
         </dict>
         <dict>
             <key>cell</key>
@@ -58,11 +58,11 @@
             <key>id</key>
             <string>REQUIRES_WIFIS</string>
             <key>key</key>
-            <string>CNAutorefreshRequiresWiFi</string>
+            <string>PNAutorefreshRequiresWiFi</string>
             <key>label</key>
             <string>Requires WiFi</string>
             <key>PostNotification</key>
-            <string>com.accuratweaks.cydianotifier/prefschanged</string>
+            <string>com.accuratweaks.packagenotifier/prefschanged</string>
             <key>icon</key>
             <string>wifi.png</string>
         </dict>

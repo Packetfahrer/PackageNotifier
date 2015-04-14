@@ -1,6 +1,6 @@
-#import "CNTimeSelectionCell.h"
+#import "PNTimeSelectionCell.h"
 
-@implementation CNTimeSelectionCell
+@implementation PNTimeSelectionCell
 
 -(id)initWithStyle:(int)style reuseIdentifier:(NSString*)reuseIdentifier specifier:(PSSpecifier*)specifier{
 	self = [super initWithStyle:style  reuseIdentifier:reuseIdentifier specifier:specifier];

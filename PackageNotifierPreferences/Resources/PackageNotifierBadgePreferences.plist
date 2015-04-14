@@ -18,7 +18,7 @@
 			<key>id</key>
 			<string>ENABLE_BADGES</string>
 			<key>key</key>
-			<string>CNEnableBadges</string>
+			<string>PNEnableBadges</string>
 			<key>label</key>
 			<string>Enable badges</string>
 			<key>set</key>
@@ -40,7 +40,7 @@
 			<key>default</key>
 			<true/>
 			<key>key</key>
-			<string>CNEnableAdaptiveBadgeColor</string>
+			<string>PNEnableAdaptiveBadgeColor</string>
 			<key>label</key>
 			<string>Adaptive badge color</string>
 			<key>id</key>
@@ -62,7 +62,7 @@
 			<key>cell</key>
 			<string>PSSegmentCell</string>
 			<key>key</key>
-			<string>CNBadgeTextColor</string>
+			<string>PNBadgeTextColor</string>
 			<key>id</key>
 			<string>BADGE_TEXT_COLOR</string>
 			<key>validValues</key>
@@ -100,7 +100,7 @@
 			<key>cell</key>
 			<string>PSSegmentCell</string>
 			<key>key</key>
-			<string>CNBadgeColor</string>
+			<string>PNBadgeColor</string>
 			<key>id</key>
 			<string>BADGE_COLOR</string>
 			<key>validValues</key>
@@ -136,7 +136,7 @@
 			<key>default</key>
 			<false/>
 			<key>key</key>
-			<string>CNEnableBadgeBorder</string>
+			<string>PNEnableBadgeBorder</string>
 			<key>label</key>
 			<string>Enable border around badge</string>
 			<key>icon</key>
@@ -152,7 +152,7 @@
 			<key>cell</key>
 			<string>PSSegmentCell</string>
 			<key>key</key>
-			<string>CNBadgeAlignment</string>
+			<string>PNBadgeAlignment</string>
 			<key>validValues</key>
 			<array>
 				<string>left</string>
@@ -180,7 +180,7 @@
 			<key>placeholder</key>
 			<string>Update available</string>
 			<key>key</key>
-			<string>CNCustomBadgeText</string>
+			<string>PNCustomBadgeText</string>
 		</dict>
 	</array>
 </dict>

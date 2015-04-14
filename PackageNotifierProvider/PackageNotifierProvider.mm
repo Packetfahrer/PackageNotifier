@@ -1,5 +1,5 @@
 #import "BBDataProvider-Protocol.h"
-#import "CydiaNotifierProvider.h"
+#import "PackageNotifierProvider.h"
 #import <mach/mach_types.h>
 
 
@@ -9,27 +9,27 @@ extern "C" mach_port_t SBSSpringBoardServerPort();
 extern "C" void SBSetApplicationBadgeNumber(mach_port_t serverPort, const char* applicationIdentifier, int badgeAmount);
 
 
-static CydiaNotifierProvider* sharedProvider;
+static PackageNotifierProvider* sharedProvider;
 
 static void refresh_callback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-	[((__bridge CydiaNotifierProvider*)observer) refreshAndUpdate];
+	[((__bridge PackageNotifierProvider*)observer) refreshAndUpdate];
 }
 
 static void cancel_callback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-	[((__bridge CydiaNotifierProvider*)observer) cancelRefresh];
+	[((__bridge PackageNotifierProvider*)observer) cancelRefresh];
 }
 
 static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-	[((__bridge CydiaNotifierProvider*)observer) reloadPreferences];
+	[((__bridge PackageNotifierProvider*)observer) reloadPreferences];
 }
 
-@implementation CydiaNotifierProvider
-+ (CydiaNotifierProvider*)sharedProvider
+@implementation PackageNotifierProvider
++ (PackageNotifierProvider*)sharedProvider
 {
 	return sharedProvider;
 }
 
--(CydiaNotifierProvider*)init{
+-(PackageNotifierProvider*)init{
 	NSProcessInfo *processInfo;
 	NSDictionary* environment;
 
@@ -45,13 +45,13 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 			self.isWorking = NO;
 			self->cachedBulletins = [[NSMutableDictionary alloc]init];
 			self->currentlyShownBulletins = [[NSMutableDictionary alloc]init];
-			notify_register_check("com.accuratweaks.cydianotifier/status", &self->status_token);
-		    [LASharedActivator registerListener: self forName:@"com.accuratweaks.cydianotifier.refresh"];
+			notify_register_check("com.accuratweaks.packagenotifier/status", &self->status_token);
+		    [LASharedActivator registerListener: self forName:@"com.accuratweaks.packagenotifier.refresh"];
 
 		    CFNotificationCenterRef darwinCenter = CFNotificationCenterGetDarwinNotifyCenter();
-	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, refresh_callback, CFSTR("com.accuratweaks.cydianotifier/refresh"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, cancel_callback, CFSTR("com.accuratweaks.cydianotifier/cancel"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, prefs_callback, CFSTR("com.accuratweaks.cydianotifier/prefschanged"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, refresh_callback, CFSTR("com.accuratweaks.packagenotifier/refresh"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, cancel_callback, CFSTR("com.accuratweaks.packagenotifier/cancel"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, prefs_callback, CFSTR("com.accuratweaks.packagenotifier/prefschanged"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 
 		}
 	}
@@ -111,7 +111,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 	if(!self.isWorking){
 		self.isWorking = TRUE;
 		notify_set_state(self->status_token, 1);
-		notify_post("com.accuratweaks.cydianotifier/status");
+		notify_post("com.accuratweaks.packagenotifier/status");
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			BOOL successful = [self refresh];
 			if(successful){
@@ -126,7 +126,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 				[self updateBulletinsForPackages:packages];
 			}
 			notify_set_state(self->status_token, 0);
-			notify_post("com.accuratweaks.cydianotifier/status");
+			notify_post("com.accuratweaks.packagenotifier/status");
 			self.isWorking = FALSE;
 
 		});
@@ -139,10 +139,10 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 
 		//save that. we need it for the preferences.
 		NSArray* packageIdentifiers = [packagesWithUpdates allKeys];
-		NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:CydiaNotifierPreferencePlistPath];
+		NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath];
 		NSMutableDictionary* mutableSettings = settings ? [settings mutableCopy] : [[NSMutableDictionary alloc]init];
 		mutableSettings[@"packagesWithUpdates"] = packageIdentifiers;
-		[mutableSettings writeToFile:CydiaNotifierPreferencePlistPath atomically:YES];
+		[mutableSettings writeToFile:PackageNotifierPreferencePlistPath atomically:YES];
 	});
 }
 
@@ -153,7 +153,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 	//we need a helper binary, since the refresh command must be run as root, and I can't do that from SpringBoard itself.
 	pid_t _child;
 	const char* args[] = {"refresh-helper", "start", NULL};
-	posix_spawn(&_child, "/Library/Application Support/CydiaNotifier/refresh-helper", NULL, NULL, (char* const*)args, NULL);
+	posix_spawn(&_child, "/Library/Application Support/PackageNotifier/refresh-helper", NULL, NULL, (char* const*)args, NULL);
 	setpriority(PRIO_PROCESS, _child, 10);
 	int status = -1;
 	int result;
@@ -171,13 +171,13 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 			//need a helper binary, same reason as for -(BOOL)refresh.
 			pid_t _child;
 			const char* args[] = {"refresh-helper", "stop", NULL};
-			posix_spawn(&_child, "/Library/Application Support/CydiaNotifier/refresh-helper", NULL, NULL, (char* const*)args, NULL);
+			posix_spawn(&_child, "/Library/Application Support/PackageNotifier/refresh-helper", NULL, NULL, (char* const*)args, NULL);
 			setpriority(PRIO_PROCESS, _child, 10);
 			int result;
 			waitpid(_child, &result, 0);
 
 			notify_set_state(self->status_token, 0);
-			notify_post("com.accuratweaks.cydianotifier/status");
+			notify_post("com.accuratweaks.packagenotifier/status");
 		});
 	}
 }
@@ -280,10 +280,10 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 
 	//save that. we need it for the preferences.
 	NSArray* packageIdentifiers = [packagesWithUpdates allKeys];
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:CydiaNotifierPreferencePlistPath];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath];
 	NSMutableDictionary* mutableSettings = settings ? [settings mutableCopy] : [[NSMutableDictionary alloc]init];
 	mutableSettings[@"packagesWithUpdates"] = packageIdentifiers;
-	[mutableSettings writeToFile:CydiaNotifierPreferencePlistPath atomically:YES];
+	[mutableSettings writeToFile:PackageNotifierPreferencePlistPath atomically:YES];
 
 
 	__block NSMutableArray* packages = [[NSMutableArray alloc]init];
@@ -412,15 +412,15 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 	//this is called whenever the event mode is changed - to lockscreen, springboard or application. Good enough to cehck the passed time here
 	if(![eventMode isEqualToString:@"lockscreen"]){
 		//no refresh on lockscreen
-		if(CNEnableAutoRefresh){
+		if(PNEnableAutoRefresh){
 			BOOL mayProceed = true;
-			if(CNAutorefreshRequiresWiFi){
+			if(PNAutorefreshRequiresWiFi){
 				SBWiFiManager* wifiManger = (SBWiFiManager*)[NSClassFromString(@"SBWiFiManager") sharedInstance];
 				mayProceed = [wifiManger isAssociated];
 			}
 			if(mayProceed){
 				double secondsAfterLastRefresh = [[NSDate date] timeIntervalSinceReferenceDate] - lastUpdateTime;
-				if(secondsAfterLastRefresh > CNAutoRefreshIntervalSeconds){
+				if(secondsAfterLastRefresh > PNAutoRefreshIntervalSeconds){
 					[self refreshAndUpdate];
 				}
 			}
@@ -429,7 +429,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 }
 
 - (void)activator:(LAActivator *)activator receiveEvent:(LAEvent *)event forListenerName:(NSString *)listenerName {
-	// Called when we receive an event - eg the action that was assigned to cydiaNotifier was "done"
+	// Called when we receive an event - eg the action that was assigned to packageNotifier was "done"
 	if (!self.isWorking) {
 		[self refreshAndUpdate];
 		[event setHandled:YES];
@@ -438,16 +438,16 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 
 #pragma mark preferences
 -(void)reloadPreferences{
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:CydiaNotifierPreferencePlistPath];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath];
 
-	CNEnableAutoRefresh = settings[@"CNEnableAutoRefresh"] ? [settings[@"CNEnableAutoRefresh"] boolValue] : TRUE;
-	CNAutoRefreshInterval = settings[@"CNAutoRefreshInterval"] ? [settings[@"CNAutoRefreshInterval"] intValue] : 3;
-	CNAutorefreshRequiresWiFi =  settings[@"CNAutorefreshRequiresWiFi"] ? [settings[@"CNAutorefreshRequiresWiFi"] boolValue] : FALSE;
+	PNEnableAutoRefresh = settings[@"PNEnableAutoRefresh"] ? [settings[@"PNEnableAutoRefresh"] boolValue] : TRUE;
+	PNAutoRefreshInterval = settings[@"PNAutoRefreshInterval"] ? [settings[@"PNAutoRefreshInterval"] intValue] : 3;
+	PNAutorefreshRequiresWiFi =  settings[@"PNAutorefreshRequiresWiFi"] ? [settings[@"PNAutorefreshRequiresWiFi"] boolValue] : FALSE;
 
-	if(CNAutoRefreshInterval < 0 || CNAutoRefreshInterval > 6 )
-		CNAutoRefreshInterval = 3;
+	if(PNAutoRefreshInterval < 0 || PNAutoRefreshInterval > 6 )
+		PNAutoRefreshInterval = 3;
 	NSArray* refreshIntervalMap = @[@(60), @(7200), @(10800), @(21600), @(43200), @(86400), @(172800)];
-	CNAutoRefreshIntervalSeconds = [refreshIntervalMap[CNAutoRefreshInterval] doubleValue];
+	PNAutoRefreshIntervalSeconds = [refreshIntervalMap[PNAutoRefreshInterval] doubleValue];
 
 	dismissedBulletins = [settings[@"dismissedBulletins"] isKindOfClass:[NSArray class]] ? [settings[@"dismissedBulletins"] mutableCopy] : [[NSMutableArray alloc]init];
 	currentlyShownBulletins = [settings[@"currentlyShownBulletins"] isKindOfClass:[NSDictionary class]] ? [settings[@"currentlyShownBulletins"] mutableCopy]: [[NSMutableDictionary alloc]init];
@@ -455,27 +455,27 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 }
 
 -(void)reloadLastUpdateTime{
-	//loads it from the plist that cydia uses too. Important, so we respect cydias last refresh, and cydia respects ours.
-	NSDictionary* cydiaMetadata = [NSDictionary dictionaryWithContentsOfFile: @"/var/lib/cydia/metadata.plist"];
-	id lastUpdate = cydiaMetadata[@"LastUpdate"];
+	//loads it from the plist that package uses too. Important, so we respect packages last refresh, and package respects ours.
+	NSDictionary* packageMetadata = [NSDictionary dictionaryWithContentsOfFile: @"/var/lib/cydia/metadata.plist"];
+	id lastUpdate = packageMetadata[@"LastUpdate"];
 	if ([lastUpdate isKindOfClass: [NSDate class]]){
 		self->lastUpdateTime = [lastUpdate timeIntervalSinceReferenceDate];
 	}
 }
 
 -(void)saveDismissed{
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:CydiaNotifierPreferencePlistPath];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath];
 	NSMutableDictionary* mutableSettings = settings ? [settings mutableCopy] : [[NSMutableDictionary alloc]init];
 
 	mutableSettings[@"dismissedBulletins"] = self->dismissedBulletins;
-	[mutableSettings writeToFile:CydiaNotifierPreferencePlistPath atomically:YES];
+	[mutableSettings writeToFile:PackageNotifierPreferencePlistPath atomically:YES];
 }
 
 -(void)saveCurrentlyShownBulletins{
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:CydiaNotifierPreferencePlistPath];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath];
 	NSMutableDictionary* mutableSettings = settings ? [settings mutableCopy] : [[NSMutableDictionary alloc]init];
 
 	mutableSettings[@"currentlyShownBulletins"] = self->currentlyShownBulletins;
-	[mutableSettings writeToFile:CydiaNotifierPreferencePlistPath atomically:YES];
+	[mutableSettings writeToFile:PackageNotifierPreferencePlistPath atomically:YES];
 }
 @end
