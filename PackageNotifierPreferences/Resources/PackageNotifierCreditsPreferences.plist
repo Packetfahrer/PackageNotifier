@@ -50,7 +50,19 @@
             <key>icon</key>
             <string>paypal.png</string>
         </dict>
-                <dict>
+        <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+        </dict>
+        <dict>
+            <key>cellClass</key>
+            <string>ATPSMultiLineTableCell</string>
+            <key>multiLineLabel</key>
+            <string>Thanks to *@rpetrich* for his work on **Curiosa**! It helped a lot during the process of creating PackageNotifier as a reference implementation of a BulletinBoard plugin.</string>
+            <key>dynamicHeight</key>
+            <true/>
+        </dict>
+        <dict>
             <key>cell</key>
             <string>PSGroupCell</string>
             <key>label</key>
