@@ -34,6 +34,7 @@ Refreshes all your sources in the background every 1 to 48 hour (configuratable)
 <img src="http://i.imgur.com/O2hATGw.png"  height="450" width="253" >
 <img src="http://i.imgur.com/bTxfxpA.png"  height="450" width="253" >
 <img src="http://i.imgur.com/zev5GhU.png"  height="450" width="253" >
+<img src="http://i.imgur.com/ujvv0pz.jpg"  height="450" width="253" >
 
 
 **License**
