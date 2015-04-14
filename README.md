@@ -25,7 +25,7 @@ Highly customization badge in the settings for each package and a button that op
 
 Receive a banner notification as soon as an update is available for one of your installed packages. 
 
-<img width="132" src="http://i.imgur.com/qzFpOuA.png"> <img width="132"  src="http://i.imgur.com/xHrpHnw.png">
+<img width="132" src="http://i.imgur.com/ZZpa6WC.png"> <img width="132"  src="http://i.imgur.com/xHrpHnw.png">
 
 
 
