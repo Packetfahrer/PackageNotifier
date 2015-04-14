@@ -1,10 +1,10 @@
-**Status**: Submitted to thebigboss.org (04/14/2015 01:45)
+**Status**: Delayed, name changed to PackageNotifier
 
 ---
 ---
 
 
-###Cydia Notifier (iOS 7 & 8)###
+###Package Notifier (iOS 7 & 8)###
 
 Background Refresh, Notifications & Badges for Cydia
 
