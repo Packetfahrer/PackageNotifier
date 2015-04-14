@@ -43,8 +43,8 @@ Package Notifier's implementation of the notification part (a BulletinBoard plug
 <img src="http://i.imgur.com/Fteb20N.png"  height="450" width="253" >
 <img src="http://i.imgur.com/ujvv0pz.jpg"  height="450" width="253" >
 <img src="http://i.imgur.com/OijCDrj.jpg"  height="450" width="253" >
-<img src="http://i.imgur.com/bTxfxpA.png"  height="450" width="253" >
-<img src="http://i.imgur.com/zev5GhU.png"  height="450" width="253" >
+<img src="http://i.imgur.com/yx7YaUC.png"  height="450" width="253" >
+<img src="http://i.imgur.com/VGQLjff.png"  height="450" width="253" >
 
 
 
