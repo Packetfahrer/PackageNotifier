@@ -4,7 +4,7 @@
 ---
 
 
-###Package Notifier (iOS 7 & 8)###
+###Package Notifier (compatible with iOS 7 & 8)###
 
 Background Refresh, Notifications & Badges for Cydia
 
@@ -39,10 +39,10 @@ Package Notifier's implementation of the notification part (a BulletinBoard plug
 
 **Screenshots**
 
-<img src="http://i.imgur.com/OijCDrj.jpg"  height="450" width="253" >
+<img src="http://i.imgur.com/ejUjYe4.jpg"  height="450" width="253" >
 <img src="http://i.imgur.com/Fteb20N.png"  height="450" width="253" >
 <img src="http://i.imgur.com/ujvv0pz.jpg"  height="450" width="253" >
-<img src="http://i.imgur.com/ejUjYe4.jpg"  height="450" width="253" >
+<img src="http://i.imgur.com/OijCDrj.jpg"  height="450" width="253" >
 <img src="http://i.imgur.com/bTxfxpA.png"  height="450" width="253" >
 <img src="http://i.imgur.com/zev5GhU.png"  height="450" width="253" >
 
