@@ -11,6 +11,7 @@ extern "C" void SBSetApplicationBadgeNumber(mach_port_t serverPort, const char* 
 
 static PackageNotifierProvider* sharedProvider;
 
+//callbacks for notifications
 static void refresh_callback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
 	[((__bridge PackageNotifierProvider*)observer) refreshAndUpdate];
 }
@@ -26,6 +27,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 @implementation PackageNotifierProvider
 + (PackageNotifierProvider*)sharedProvider
 {
+	//this is weird, but even apple uses it this way in the SMS BulletinBoard PLugin
 	return sharedProvider;
 }
 
@@ -46,12 +48,12 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 			self->cachedBulletins = [[NSMutableDictionary alloc]init];
 			self->currentlyShownBulletins = [[NSMutableDictionary alloc]init];
 			notify_register_check("com.accuratweaks.packagenotifier/status", &self->status_token);
-		    [LASharedActivator registerListener: self forName:@"com.accuratweaks.packagenotifier.refresh"];
+			[LASharedActivator registerListener: self forName:@"com.accuratweaks.packagenotifier.refresh"];
 
-		    CFNotificationCenterRef darwinCenter = CFNotificationCenterGetDarwinNotifyCenter();
-	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, refresh_callback, CFSTR("com.accuratweaks.packagenotifier/refresh"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, cancel_callback, CFSTR("com.accuratweaks.packagenotifier/cancel"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-	   		CFNotificationCenterAddObserver(darwinCenter, (const void*)self, prefs_callback, CFSTR("com.accuratweaks.packagenotifier/prefschanged"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+			CFNotificationCenterRef darwinCenter = CFNotificationCenterGetDarwinNotifyCenter();
+			CFNotificationCenterAddObserver(darwinCenter, (const void*)self, refresh_callback, CFSTR("com.accuratweaks.packagenotifier/refresh"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+			CFNotificationCenterAddObserver(darwinCenter, (const void*)self, cancel_callback, CFSTR("com.accuratweaks.packagenotifier/cancel"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+			CFNotificationCenterAddObserver(darwinCenter, (const void*)self, prefs_callback, CFSTR("com.accuratweaks.packagenotifier/prefschanged"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 
 		}
 	}
@@ -76,9 +78,9 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 - (id)clearedInfoForBulletins:(NSSet *)bulletins2Remove lastClearedInfo:(id)arg2{
 	//callend when we tap on a bulletin, or swipe and click dismiss, or dismiss the whole section in the nc.
 	for(BBBulletin* bulletin in bulletins2Remove){
-	  	[self->cachedBulletins removeObjectForKey:[bulletin publisherBulletinID]];
-	  	[self->dismissedBulletins addObject:[bulletin publisherBulletinID]];
-	  	[self->currentlyShownBulletins removeObjectForKey:[bulletin publisherBulletinID]];
+		[self->cachedBulletins removeObjectForKey:[bulletin publisherBulletinID]];
+		[self->dismissedBulletins addObject:[bulletin publisherBulletinID]];
+		[self->currentlyShownBulletins removeObjectForKey:[bulletin publisherBulletinID]];
 	}
 
 	[self saveDismissed];
@@ -89,7 +91,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 - (NSSet *)bulletinsFilteredBy:(unsigned long long)arg1 count:(unsigned long long)arg2 lastCleared:(id)arg3
 {
 	//this is required as of iOS 8.1
-  	return [NSSet setWithArray:[self->cachedBulletins allValues]];
+	return [NSSet setWithArray:[self->cachedBulletins allValues]];
 }
 
 - (NSArray *)sortDescriptors{
@@ -118,10 +120,10 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 				//this (hopefully) changed.
 				[self reloadLastUpdateTime];
 
-				//we got new data, let's update and create some bulletins
+				//we got new data, let's get updates and create some bulletins
 				NSArray* packages = [self getUpdates];
 
-				//this uses xpc which is actually not nesseasary, since we are allready in springboard.
+				//this uses xpc which is actually not nesseasary, since we are allready in springboard. ToDo: Check the MiG Subsystem in SpingBoard to c which method is invoked there
 				SBSetApplicationBadgeNumber(SBSSpringBoardServerPort(), "com.saurik.Cydia", [packages count]);
 				[self updateBulletinsForPackages:packages];
 			}
@@ -222,13 +224,13 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 -(void)dismissAllBulletins{
 	[[self->cachedBulletins copy] enumerateKeysAndObjectsUsingBlock:^(NSString* bulletinID, BBBulletin* bulletin, BOOL* stop) {
 
-       [self->cachedBulletins removeObjectForKey:bulletinID];
-       [self->currentlyShownBulletins removeObjectForKey:bulletinID];
-       [self->dismissedBulletins addObject:bulletinID];
-       BBDataProviderWithdrawBulletinsWithRecordID(self, bulletinID);
-    }];
-    [self saveDismissed];
-    [self saveCurrentlyShownBulletins];
+	   [self->cachedBulletins removeObjectForKey:bulletinID];
+	   [self->currentlyShownBulletins removeObjectForKey:bulletinID];
+	   [self->dismissedBulletins addObject:bulletinID];
+	   BBDataProviderWithdrawBulletinsWithRecordID(self, bulletinID);
+	}];
+	[self saveDismissed];
+	[self saveCurrentlyShownBulletins];
 }
 
 -(void)updateBulletinsForPackages:(NSArray*)packages{
@@ -290,7 +292,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 	[packagesWithUpdates enumerateKeysAndObjectsUsingBlock:^(NSString* package_identifier, NSString* version, BOOL* stop) {
 	   NSDictionary* package_data = [self getPackageDetailsForIdentifier:package_identifier];
 	   if(package_data){
-	  	 [packages addObject:package_data];
+		 [packages addObject:package_data];
 	   }
 	}];
 	return packages;
@@ -298,7 +300,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 
 
 -(NSDictionary*)getPackagesWithUpdates{
-	FILE* f = popen("apt-get upgrade -s -qq -y -f", "r");
+	FILE* f = popen("apt-get upgrade -s -qq -y -f", "r"); //does not need root, since it does not write/modify anyting
 
 	NSMutableDictionary* packagesWithUpdates = [[NSMutableDictionary alloc]init];
 	if (f != NULL) {
@@ -346,59 +348,59 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 
 -(NSDictionary*)getPackageDetailsForIdentifier:(NSString*)packageIdentifier{
 	//gets deatil information for the package. Also, if two packages with teh same identifier are available (one installed from local, one available on a repor for example), the one with the heighest version is used.
-    NSString* dpkgQuery = [[NSString alloc] initWithFormat:@"apt-cache show \"%@\"", packageIdentifier];
-    FILE* f = popen([dpkgQuery UTF8String], "r");
+	NSString* dpkgQuery = [[NSString alloc] initWithFormat:@"apt-cache show \"%@\"", packageIdentifier];
+	FILE* f = popen([dpkgQuery UTF8String], "r");
 
-    NSMutableDictionary* packageDetail = [NSMutableDictionary dictionary];
-    if (f != NULL) {
-    	//holds the line we're reading right now untill we reached the end of the line or EOF
-        NSMutableData *lineBuffer = [[NSMutableData alloc]init];
-	    char buf[1025];
-	    size_t maxSize = (sizeof(buf) - 1);
-	    while (!feof(f)) {
-	    	//as long as we didn't reach EOF
-	        if (fgets(buf, maxSize, f)) {
-	            buf[maxSize] = '\0';//make sure the string is 0 terminated!
+	NSMutableDictionary* packageDetail = [NSMutableDictionary dictionary];
+	if (f != NULL) {
+		//holds the line we're reading right now untill we reached the end of the line or EOF
+		NSMutableData *lineBuffer = [[NSMutableData alloc]init];
+		char buf[1025];
+		size_t maxSize = (sizeof(buf) - 1);
+		while (!feof(f)) {
+			//as long as we didn't reach EOF
+			if (fgets(buf, maxSize, f)) {
+				buf[maxSize] = '\0';//make sure the string is 0 terminated!
 
-	            //check if we reached the end of the line
-	            char *lineBreakLocation = strrchr(buf, '\n');
-	            if (lineBreakLocation != NULL) {
-	            	//we did find a line break. Add it to lineBuffer and we got the whole line
-	                [lineBuffer appendBytes:buf length:(NSUInteger)(lineBreakLocation - buf)];
+				//check if we reached the end of the line
+				char *lineBreakLocation = strrchr(buf, '\n');
+				if (lineBreakLocation != NULL) {
+					//we did find a line break. Add it to lineBuffer and we got the whole line
+					[lineBuffer appendBytes:buf length:(NSUInteger)(lineBreakLocation - buf)];
 
-	                //the whole line is now in the buffer
-	                NSString *lineString = [[NSString alloc] initWithData:lineBuffer encoding:NSUTF8StringEncoding];
+					//the whole line is now in the buffer
+					NSString *lineString = [[NSString alloc] initWithData:lineBuffer encoding:NSUTF8StringEncoding];
 
 
-	                if([lineString length] == 0){
-	                	//it's the end of a package.
-	                	break;
-	                }else{
-	                	 //check if we got a key and a value
-		                NSUInteger firstColon = [lineString rangeOfString:@":"].location;
-		                if (firstColon != NSNotFound) {
-		                    NSUInteger length = [lineString length];
-		                    //check if value is not empty
-		                    if (length > (firstColon + 1)) {
-		                        NSString *key = [lineString substringToIndex:firstColon];
-		                        NSString *value = [lineString substringFromIndex:(firstColon + 1)];
-		                        //remove any whitespaces from value
-		                        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-		                        if ([value length] > 0) {
-		                            [packageDetail setObject:value forKey:key];
-		                        }
-		                    }
-		                }
-	                }
-	                //reset the lineBuffer
-	                [lineBuffer setLength:0];
-	            } else {
-	            	//we didn't reach the end of the line yet. Buffer everything
-	                [lineBuffer appendBytes:buf length:maxSize];
-	            }
-	        }
-	    }
-    }
+					if([lineString length] == 0){
+						//it's the end of a package.
+						break;
+					}else{
+						 //check if we got a key and a value
+						NSUInteger firstColon = [lineString rangeOfString:@":"].location;
+						if (firstColon != NSNotFound) {
+							NSUInteger length = [lineString length];
+							//check if value is not empty
+							if (length > (firstColon + 1)) {
+								NSString *key = [lineString substringToIndex:firstColon];
+								NSString *value = [lineString substringFromIndex:(firstColon + 1)];
+								//remove any whitespaces from value
+								value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+								if ([value length] > 0) {
+									[packageDetail setObject:value forKey:key];
+								}
+							}
+						}
+					}
+					//reset the lineBuffer
+					[lineBuffer setLength:0];
+				} else {
+					//we didn't reach the end of the line yet. Buffer everything
+					[lineBuffer appendBytes:buf length:maxSize];
+				}
+			}
+		}
+	}
 	pclose(f);
 	if(!packageDetail[@"Package"])
 		//only return a dict if we got an entry!
@@ -409,7 +411,7 @@ static void prefs_callback(CFNotificationCenterRef center, void *observer, CFStr
 
 #pragma mark libactivator
 - (void)activator:(LAActivator *)activator didChangeToEventMode:(NSString *)eventMode {
-	//this is called whenever the event mode is changed - to lockscreen, springboard or application. Good enough to cehck the passed time here
+	//this is called whenever the event mode is changed - to lockscreen, springboard or application. Good enough to cehck the passed time here. Also makes sure updates only hjappen when the device is being used
 	if(![eventMode isEqualToString:@"lockscreen"]){
 		//no refresh on lockscreen
 		if(PNEnableAutoRefresh){

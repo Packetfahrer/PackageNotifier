@@ -61,12 +61,12 @@ static NSArray* replaced_PSListController_specifiers(PSListController* self, SEL
 			}
 
 			PSSpecifier *installUpdateSpecifier = [PSTextFieldSpecifier preferenceSpecifierNamed:@"Install the new update"
-	                                                          target:self
-	                                                          set:nil
-	                                                          get:nil
-	                                                          detail:nil
-	                                                          cell:[PSTableCell cellTypeFromString:@"PSLinkCell"]
-	                                                          edit:nil];
+															  target:self
+															  set:nil
+															  get:nil
+															  detail:nil
+															  cell:[PSTableCell cellTypeFromString:@"PSLinkCell"]
+															  edit:nil];
 
 			[installUpdateSpecifier setProperty:@"red" forKey:@"backgroundColor"];
 			[installUpdateSpecifier setProperty:@"white" forKey:@"textColor"];
@@ -202,7 +202,7 @@ static void installUpdate(PSListController* self, SEL _cmd){
 		size_t packageIdentifierSize = strcspn(buf, ":");//output looks like this: me.simonselg.qrmode: /Library/MobileSubstrate/DynamicLibraries/QRMode.dylib
 		[packageIdentifierBuffer appendBytes:buf length:packageIdentifierSize];
 		if (packageIdentifierSize != bufferSize) {
-		    //we found something - no need to read more.
+			//we found something - no need to read more.
 		break;
 		}
 	}
@@ -218,9 +218,9 @@ static void installUpdate(PSListController* self, SEL _cmd){
 	if([packageIdentifier isEqualToString:@"dpkg"]){
 		packageIdentifier = nil;
 	}else if(packageIdentifier){
-	    //cache the result
-	    packageIdentifierCache[filepath] = packageIdentifier;
-	    NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath];
+		//cache the result
+		packageIdentifierCache[filepath] = packageIdentifier;
+		NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PackageNotifierPreferencePlistPath];
 		NSMutableDictionary* mutableSettings = settings ? [settings mutableCopy] : [[NSMutableDictionary alloc]init];
 	
 		mutableSettings[@"packageIdentifierCache"] = packageIdentifierCache;

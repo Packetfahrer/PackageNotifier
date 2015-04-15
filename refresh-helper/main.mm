@@ -15,6 +15,8 @@ int main(int argc, char **argv, char **envp) {
 	return -1;
 }
 
+//todo: maybe use posix_spawn here
+
 int startRefresh(){
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
