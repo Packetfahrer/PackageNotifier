@@ -1,4 +1,8 @@
-**Status**: Delayed, name changed to Package Notifier
+This is the source code for "Package Notifier", a bundle consisting out of a BulletinBord plugin, a tweak part that injects into SpringBoard and Preferences, a helper binary to run apt-related actions (since they should be exectued as root, which is not that easyly possible from SpringBoard), and a preferences bundle.
+
+Requirs [AccuraTweaksCommon](https://github.com/Cr4zyS1m0n/AccuraTweaksCommon), which contains a lot of code used in the preferences bundle and the preferences tweak.
+
+Description follows
 
 ---
 ---
