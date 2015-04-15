@@ -60,21 +60,21 @@
 -(id)tableView:(id)arg1 cellForRowAtIndexPath:(NSIndexPath*)indexPath{
 	PSTableCell* cell = [super tableView:arg1 cellForRowAtIndexPath:indexPath];
 
-  	if(indexPath.row == 0){
-	  	if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-	           [cell setSeparatorInset:UIEdgeInsetsZero];
-	    }
+	if(indexPath.row == 0){
+		if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+			   [cell setSeparatorInset:UIEdgeInsetsZero];
+		}
 
-	    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
-	        [cell setPreservesSuperviewLayoutMargins:NO];
-	    }
+		if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+			[cell setPreservesSuperviewLayoutMargins:NO];
+		}
 
-	    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-	        [cell setLayoutMargins:UIEdgeInsetsZero];
-	    }
+		if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+			[cell setLayoutMargins:UIEdgeInsetsZero];
+		}
   }
-    
-    return cell;
+	
+	return cell;
 }
 
 @end

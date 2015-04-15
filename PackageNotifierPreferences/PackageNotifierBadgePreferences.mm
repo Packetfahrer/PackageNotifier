@@ -3,6 +3,8 @@
 #define enableGroupFooterTextDisabled @"Enabling this option will show a badge, similar to the OTA Update badge in the cells of packages, for which updates are available. \n\nAll changes here require a restart of the preference app."
 #define enableGroupFooterTextEnabled @"All changes here require a restart of the preference app."
 
+//todo: Stop using indexes here. 
+
 @implementation PackageNotifierBadgePreferencesListController
 - (id)specifiers {
 	if(_specifiers == nil) {

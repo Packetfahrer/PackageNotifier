@@ -24,7 +24,7 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 -(id)init{
 	self = [super init];
 	if(self){
-	    notify_register_check("com.accuratweaks.packagenotifier/status", &self->status_token);
+		notify_register_check("com.accuratweaks.packagenotifier/status", &self->status_token);
 	}
 	return self;
 }
@@ -81,24 +81,25 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 }
 
 -(void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error{
-    [self dismissViewControllerAnimated:YES completion:nil];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) viewWillAppear:(BOOL)animated{
-  	[super viewWillAppear:animated];
- 	[self updateRefreshButton];
+	[super viewWillAppear:animated];
+	[self updateRefreshButton];
 
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), (const void*)self, status_callback, CFSTR("com.accuratweaks.packagenotifier/status"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	[[NSNotificationCenter defaultCenter] addObserver: self
-                                         selector: @selector(handleEnterForeground:)
-                                             name: UIApplicationWillEnterForegroundNotification
-                                           object: nil];
+										 selector: @selector(handleEnterForeground:)
+											 name: UIApplicationWillEnterForegroundNotification
+										   object: nil];
 }
 
 -(void) viewWillDisappear:(BOOL)animated{
-  	[super viewWillDisappear:animated];
- 	CFNotificationCenterRemoveObserver (CFNotificationCenterGetDarwinNotifyCenter(), (const void*)self, CFSTR("com.accuratweaks.packagenotifier/status"), NULL);
- 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super viewWillDisappear:animated];
+	//remove it. Curiosa doesn't, which leads to crashes.
+	CFNotificationCenterRemoveObserver (CFNotificationCenterGetDarwinNotifyCenter(), (const void*)self, CFSTR("com.accuratweaks.packagenotifier/status"), NULL);
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)handleEnterForeground:(NSNotification*)notification{
@@ -109,23 +110,23 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 -(void)updateRefreshButton{
 	NSString *buttonTitle;
 	NSString *buttonStatus;
- 	PSSpecifier* refresh_button_specifier;
- 	PSSpecifier* refresh_group_specifier;
- 	NSString* refresh_group_footerText;
-  	uint64_t state = 0;
+	PSSpecifier* refresh_button_specifier;
+	PSSpecifier* refresh_group_specifier;
+	NSString* refresh_group_footerText;
+	uint64_t state = 0;
 
 	notify_get_state(self->status_token, &state);
 	if (state){
 		buttonTitle = @"Cancel refresh";
 		buttonStatus = @"Refreshing package list...";
 	}else{
-	    buttonTitle = @"Manual Refresh";
+		buttonTitle = @"Manual Refresh";
 	}
 	refresh_button_specifier = [self specifierForID: @"REFRESH_BUTTON"];
 	NSString* buttonCurrentTitle = [refresh_button_specifier name];
 	if (![buttonCurrentTitle isEqualToString: buttonTitle]){
-	  	[refresh_button_specifier setName: buttonTitle];
-   		[self reloadSpecifier: refresh_button_specifier];
+		[refresh_button_specifier setName: buttonTitle];
+		[self reloadSpecifier: refresh_button_specifier];
 	}
 	refresh_group_specifier = [self specifierForID: @"REFRESH_GROUP"];
 	refresh_group_footerText = [refresh_group_specifier propertyForKey: @"footerText"];
@@ -140,7 +141,7 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 	}
 }
 
--(void)deleteShowNotifications{
+/*-(void)deleteShowNotifications{
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:kPackageNotifierPreferencePlistPath];
 	NSMutableDictionary* mutableSettings = settings ? [settings mutableCopy] : [[NSMutableDictionary alloc]init];
 	mutableSettings[@"dismissedBulletins"] = @[];
@@ -154,7 +155,7 @@ void status_callback(CFNotificationCenterRef center, void *observer, CFStringRef
 	mutableSettings[@"packageIdentifierCache"] = @{};
 	[mutableSettings writeToFile:kPackageNotifierPreferencePlistPath atomically:YES];
 	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.accuratweaks.packagenotifier/prefschanged"), NULL, NULL, YES);
-}
+}*/
 
 -(void) toggleSourcesRefresh{
 	uint64_t state;

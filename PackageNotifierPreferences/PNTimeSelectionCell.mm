@@ -2,6 +2,8 @@
 
 @implementation PNTimeSelectionCell
 
+//follows partionally apples implementation of the FontSizeCell that is used in Accessiblity/Font size
+
 -(id)initWithStyle:(int)style reuseIdentifier:(NSString*)reuseIdentifier specifier:(PSSpecifier*)specifier{
 	self = [super initWithStyle:style  reuseIdentifier:reuseIdentifier specifier:specifier];
 	if ( self )
